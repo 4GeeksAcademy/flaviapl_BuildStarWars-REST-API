@@ -16,6 +16,7 @@ def setup_admin(app):
 
     admin.add_view(ModelView(Planet, db.session))
 
+
     admin.add_view(ModelView(Favorites, db.session))
 
    

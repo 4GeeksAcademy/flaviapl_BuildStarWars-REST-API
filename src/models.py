@@ -58,7 +58,9 @@ class Planet(db.Model):
             "population" : self.population,
             "terrain" : self.terrain
         }
-    
+
+
+
 
 class Favorites(db.Model):
     __tablename__ = 'favorites'
