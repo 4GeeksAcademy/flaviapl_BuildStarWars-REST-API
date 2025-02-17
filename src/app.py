@@ -8,7 +8,7 @@ from flask_swagger import swagger
 from flask_cors import CORS
 from utils import APIException, generate_sitemap
 from admin import setup_admin
-from models import db, User, People, Planet
+from models import db, User, People, Planet, Favorites
 #from models import Person
 
 app = Flask(__name__)
@@ -100,7 +100,7 @@ def get_all_planets():
 
 
 
-@app.route('/planet/<int:planet_id>', methods=['GET'])
+@app.route('/planets/<int:planet_id>', methods=['GET'])
 def get_single_planet(planet_id):
 
     single_planet = Planet.query.get(planet_id)
@@ -112,7 +112,7 @@ def get_single_planet(planet_id):
 
 
 
-@app.route('/user', methods=['GET'])
+@app.route('/users', methods=['GET'])
 def get_all_users():
 
     all_planets = User.query.all()
@@ -123,15 +123,38 @@ def get_all_users():
     return jsonify(results_planets), 200
 
 
-# @app.route('/user/favorites', methods=['GET'])
-# def get_all_favorites():
+@app.route('/users/favorites', methods=['GET'])
+def get_all_favorites():
 
-#     all_favorites = Favorites.query.all()
-#     print(all_favorites)
+    all_favorites = Favorites.query.all()
+    print(all_favorites)
 
-#     results_favorites = list(map(lambda fav: fav.serialize(), all_favorites))
+    results_favorites = list(map(lambda fav: fav.serialize(), all_favorites))
+ 
+    return jsonify(results_favorites), 200
 
-#     return jsonify(results_favorites), 200
+
+
+@app.route('/users/<int:user_id>/favorites/planet/<int:planet_id>', methods=['POST'])
+def add_planet_to_favorites(user_id, planet_id):
+    print(request)                      #request è un oggetto di Flask che contiene tutte le informazioni relative alla richiesta dal client
+    print(request.json)
+
+    user = User.query.get(user_id)    # Recupera l'utente dal database
+
+    planet = Planet.query.get(planet_id)   # Recupera il pianeta dal database
+
+    body = request.json
+
+    new_fav = Favorites(user_id= user_id, planet_id = planet_id, planet_name = body["planet_name"], people_id=None, people_name=None )
+    db.session.add(new_fav) 
+    db.session.commit()
+     
+    return jsonify(), 200
+
+
+
+
 
 
 
