@@ -74,9 +74,6 @@ class Favorites(db.Model):
     people_id = db.Column(db.Integer, db.ForeignKey('people.id'), nullable=True)
     planet_id = db.Column(db.Integer, db.ForeignKey('planet.id'), nullable=True)
 
-    # planet = db.relationship('Planet', backref='favorites')
-    # people = db.relationship('People', backref='favorites')
-    # user = db.relationship('User', backref='favorites')
 
     def __repr__(self):                                                    #come mi riferisco al elemento del modello 
         return '<Favorites %r>' % self.id
