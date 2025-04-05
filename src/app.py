@@ -147,9 +147,7 @@ def add_planet_to_favorites( planet_id):
     if not planet :
         return jsonify({"error" : "Planet not found"}), 404
 
-    body = request.json
-
-    new_fav = Favorites(user_id= user.id, planet_id = planet.id, planet_name = body["planet_name"])    #o body.get("planet_name")
+    new_fav = Favorites(user_id= user.id, planet_id = planet.id, planet_name = planet.name)  
     db.session.add(new_fav) 
     db.session.commit()
      
@@ -168,8 +166,6 @@ def delete_planet_to_favorites(planet_id):
     if not planet :
         return jsonify({"error" : "Planet not found"}), 404
 
-    body = request.json
-
     fav_to_delete = Favorites.query.filter_by(user_id= user.id, planet_id = planet.id).first()    # Trova il record di favorite da eliminare
     print("Planet ID:", planet.id)
     if not fav_to_delete : 
@@ -178,7 +174,7 @@ def delete_planet_to_favorites(planet_id):
     db.session.delete(fav_to_delete)
     db.session.commit()
 
-    return jsonify({"message" : "favorite planet successfully deleted"})
+    return jsonify({"message" : "favorite planet successfully deleted"}), 200
 
 
 
@@ -194,9 +190,7 @@ def add_people_to_favorites(people_id):
     if not people :
         return jsonify({"error" : "Character not found"}), 404
 
-    body = request.json
-
-    new_fav = Favorites(user_id= user.id, people_id = people.id, people_name = body["people_name"])    #o body.get("people_name")
+    new_fav = Favorites(user_id= user.id, people_id = people.id, people_name = people.name)  
     db.session.add(new_fav) 
     db.session.commit()
      
@@ -215,8 +209,6 @@ def delete_people_to_favorites(people_id):
 
     if not people :
         return jsonify({"error" : "people not found"}), 404
-
-    body = request.json
 
     fav_to_delete = Favorites.query.filter_by(user_id= user.id, people_id = people.id).first()    # Trova il record di favorite da eliminare
     print("People ID:", people.id)
